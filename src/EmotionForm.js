@@ -95,6 +95,10 @@ export default function EmotionForm() {
       })
       setLoading(false);
     }).catch((error)=>{
+      Toast.fire({
+        icon: 'error',
+        title: 'Algo deu errado!'
+      })
       setLoading(false);
       console.error(error);
     });
