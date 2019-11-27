@@ -13,7 +13,24 @@ import firebase from "./firebase";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
+<<<<<<< HEAD
 import FormControl from "@material-ui/core/FormControl";
+=======
+import FormControl from '@material-ui/core/FormControl';
+import Swal from 'sweetalert2'
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 2000,
+  timerProgressBar: true,
+  onOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
+>>>>>>> Add novos campos ao select, toast de sucesso
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -60,15 +77,28 @@ export default function EmotionForm() {
 
   const [categoria, setCategoria] = useState("");
   const [texto, setTexto] = useState("");
+  const [loading, setLoading] = useState(false);
   // const [isDisabled, setIsDisabled] = useState(true);
 
   const saveFirebase = () => {
-    console.log("Enviando");
+    setLoading(true);
+    console.info("Enviando...");
 
     rootRef.push().set({
       texto: texto,
       categoria: categoria
+    }).then(() =>{
+      console.info('Seu dado foi salvo!')
+      Toast.fire({
+        icon: 'success',
+        title: 'Obrigado pela contribuição!'
+      })
+      setLoading(false);
+    }).catch((error)=>{
+      setLoading(false);
+      console.error(error);
     });
+
   };
 
   const changeText = event => {
@@ -125,7 +155,7 @@ export default function EmotionForm() {
               Ajude nosso algoritmo a identificar discursos de ódio.
             </Typography>
 
-            <FormControl variant="filled" className={classes.formControl}>
+            <FormControl disabled={loading} variant="filled" className={classes.formControl}>
               <InputLabel id="demo-simple-select-placeholder-label-label">
                 Escolha uma categoria
               </InputLabel>
@@ -137,11 +167,18 @@ export default function EmotionForm() {
                 onChange={event => handleChange(event)}
                 placeholder="Escolha uma categoria"
               >
+                <MenuItem value={""}>-----</MenuItem>
                 <MenuItem value={"racismo"}>Racismo</MenuItem>
-                <MenuItem value={"intolerancia_religiosa"}>
-                  Intolerância Religiosa
-                </MenuItem>
+                <MenuItem value={"intolerancia_religiosa"}>Intolerância Religiosa</MenuItem>
                 <MenuItem value={"machismo"}>Machismo</MenuItem>
+                <MenuItem value={"raca"}>Raça</MenuItem>
+                <MenuItem value={"etnia"}>Etnia</MenuItem>
+                <MenuItem value={"nacionalidade"}>Nacionalidade</MenuItem>
+                <MenuItem value={"doenca_grave_deficiencia"}>Doença grave/deficiência</MenuItem>
+                <MenuItem value={"sexo"}>Sexo</MenuItem>
+                <MenuItem value={"genero"}>Gênero</MenuItem>
+                <MenuItem value={"posicionamento_politico"}>Posicionamento Político</MenuItem>
+                <MenuItem value={"posicionamento_esportivo"}>Posicionamento Esportivo</MenuItem>
               </Select>
             </FormControl>
 
@@ -155,11 +192,12 @@ export default function EmotionForm() {
               autoFocus
               rows="4"
               multiline
+              disabled={loading}
               onChange={texto => changeText(texto)}
             />
 
             <Button
-              disabled={!enabled}
+              disabled={!enabled || loading}
               fullWidth
               variant="contained"
               color="primary"
