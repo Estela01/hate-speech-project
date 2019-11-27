@@ -13,9 +13,6 @@ import firebase from "./firebase";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
-<<<<<<< HEAD
-import FormControl from "@material-ui/core/FormControl";
-=======
 import FormControl from '@material-ui/core/FormControl';
 import Swal from 'sweetalert2'
 
@@ -30,7 +27,6 @@ const Toast = Swal.mixin({
     toast.addEventListener('mouseleave', Swal.resumeTimer)
   }
 })
->>>>>>> Add novos campos ao select, toast de sucesso
 
 const useStyles = makeStyles(theme => ({
   root: {
