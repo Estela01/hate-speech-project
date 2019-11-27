@@ -13,6 +13,7 @@ import firebase from "./firebase";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from '@material-ui/core/FormControl';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,7 +44,11 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
-  }
+  },
+  formControl: {
+    minWidth: 220,
+    marginTop: '2em'
+  },
 }));
 
 export default function EmotionForm() {
@@ -55,7 +60,7 @@ export default function EmotionForm() {
 
   const [categoria, setCategoria] = useState("");
   const [texto, setTexto] = useState("");
-  const [isDisabled, setIsDisabled] = useState(true);
+  // const [isDisabled, setIsDisabled] = useState(true);
 
   const saveFirebase = () => {
     console.log("Enviando");
@@ -66,25 +71,15 @@ export default function EmotionForm() {
     });
   };
 
-  const changeText = texto => {
-    setTexto({ texto });
-    if (texto.length > 0) {
-      if (categoria.length > 0) {
-        setIsDisabled(true);
-      } else {
-        setIsDisabled(false);
-      }
-    } else {
-      setIsDisabled(false);
-    }
-
-    console.log("Mudando TEXTO");
+  const changeText = event => {
+    setTexto(event.target.value);
   };
 
   const handleChange = event => {
-    console.log("EVENTO", event.target.value);
     setCategoria(event.target.value);
   };
+
+  const enabled = Boolean(texto.length>0 && categoria.length>0);
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -129,6 +124,27 @@ export default function EmotionForm() {
             <Typography component="h3" variant="h7">
               Ajude nosso algoritmo a identificar discursos de ódio.
             </Typography>
+
+            <FormControl variant="filled" className={classes.formControl}>
+              <InputLabel id="demo-simple-select-placeholder-label-label">
+                Escolha uma categoria
+              </InputLabel>
+
+              <Select
+                labelId="demo-simple-select-placeholder-label-label"
+                id="demo-simple-select-placeholder-label-label"
+                value={categoria}
+                onChange={event => handleChange(event)}
+                placeholder="Escolha uma categoria"
+              >
+                <MenuItem value={"racismo"}>Racismo</MenuItem>
+                <MenuItem value={"intolerancia_religiosa"}>
+                  Intolerância Religiosa
+                </MenuItem>
+                <MenuItem value={"machismo"}>Machismo</MenuItem>
+              </Select>
+            </FormControl> 
+
             <TextField
               variant="filled"
               margin="normal"
@@ -140,27 +156,10 @@ export default function EmotionForm() {
               rows="4"
               multiline
               onChange={texto => changeText(texto)}
-            />
-            <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-              Escolha uma categoria
-            </InputLabel>
-
-            <Select
-              labelId="demo-simple-select-placeholder-label-label"
-              id="demo-simple-select-placeholder-label-label"
-              value={categoria}
-              onChange={event => handleChange(event)}
-              placeholder="Escolha uma categoria"
-            >
-              <MenuItem value={"racismo"}>Racismo</MenuItem>
-              <MenuItem value={"intolerancia_religiosa"}>
-                Intolerância Religiosa
-              </MenuItem>
-              <MenuItem value={"machismo"}>Machismo</MenuItem>
-            </Select>
+            />            
 
             <Button
-              disabled={isDisabled}
+              disabled={!enabled}
               fullWidth
               variant="contained"
               color="primary"
