@@ -13,7 +13,7 @@ import firebase from "./firebase";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from '@material-ui/core/FormControl';
+import FormControl from "@material-ui/core/FormControl";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,8 +47,8 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     minWidth: 220,
-    marginTop: '2em'
-  },
+    marginTop: "2em"
+  }
 }));
 
 export default function EmotionForm() {
@@ -79,7 +79,7 @@ export default function EmotionForm() {
     setCategoria(event.target.value);
   };
 
-  const enabled = Boolean(texto.length>0 && categoria.length>0);
+  const enabled = Boolean(texto.length > 0 && categoria.length > 0);
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -143,7 +143,7 @@ export default function EmotionForm() {
                 </MenuItem>
                 <MenuItem value={"machismo"}>Machismo</MenuItem>
               </Select>
-            </FormControl> 
+            </FormControl>
 
             <TextField
               variant="filled"
@@ -156,7 +156,7 @@ export default function EmotionForm() {
               rows="4"
               multiline
               onChange={texto => changeText(texto)}
-            />            
+            />
 
             <Button
               disabled={!enabled}
@@ -164,7 +164,7 @@ export default function EmotionForm() {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={() => saveFirebase}
+              onClick={saveFirebase}
             >
               Enviar
             </Button>
