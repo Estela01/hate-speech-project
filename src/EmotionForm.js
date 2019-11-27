@@ -191,6 +191,7 @@ export default function EmotionForm() {
                   Posicionamento Esportivo
                 </MenuItem>
                 <MenuItem value={"raca"}>Raça</MenuItem>
+                <MenuItem value={"religiao"}>Religião</MenuItem>
 
                 <MenuItem value={"sexo_genero"}>Sexo/Gênero</MenuItem>
               </Select>
