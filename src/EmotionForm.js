@@ -13,20 +13,20 @@ import firebase from "./firebase";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from '@material-ui/core/FormControl';
-import Swal from 'sweetalert2'
+import FormControl from "@material-ui/core/FormControl";
+import Swal from "sweetalert2";
 
 const Toast = Swal.mixin({
   toast: true,
-  position: 'top-end',
+  position: "top-end",
   showConfirmButton: false,
-  timer: 2000,
+  timer: 3000,
   timerProgressBar: true,
-  onOpen: (toast) => {
-    toast.addEventListener('mouseenter', Swal.stopTimer)
-    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  onOpen: toast => {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
   }
-})
+});
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -80,25 +80,28 @@ export default function EmotionForm() {
     setLoading(true);
     console.info("Enviando...");
 
-    rootRef.push().set({
-      texto: texto,
-      categoria: categoria
-    }).then(() =>{
-      console.info('Seu dado foi salvo!')
-      Toast.fire({
-        icon: 'success',
-        title: 'Obrigado pela contribuição!'
+    rootRef
+      .push()
+      .set({
+        texto: texto,
+        categoria: categoria
       })
-      setLoading(false);
-    }).catch((error)=>{
-      Toast.fire({
-        icon: 'error',
-        title: 'Algo deu errado!'
+      .then(() => {
+        console.info("Seu dado foi salvo!");
+        Toast.fire({
+          icon: "success",
+          title: "Obrigado pela contribuição!"
+        });
+        setLoading(false);
       })
-      setLoading(false);
-      console.error(error);
-    });
-
+      .catch(error => {
+        Toast.fire({
+          icon: "error",
+          title: "Algo deu errado!"
+        });
+        setLoading(false);
+        console.error(error);
+      });
   };
 
   const changeText = event => {
@@ -155,7 +158,11 @@ export default function EmotionForm() {
               Ajude nosso algoritmo a identificar discursos de ódio.
             </Typography>
 
-            <FormControl disabled={loading} variant="filled" className={classes.formControl}>
+            <FormControl
+              disabled={loading}
+              variant="filled"
+              className={classes.formControl}
+            >
               <InputLabel id="demo-simple-select-placeholder-label-label">
                 Escolha uma categoria
               </InputLabel>
@@ -168,17 +175,24 @@ export default function EmotionForm() {
                 placeholder="Escolha uma categoria"
               >
                 <MenuItem value={""}>-----</MenuItem>
-                <MenuItem value={"racismo"}>Racismo</MenuItem>
-                <MenuItem value={"intolerancia_religiosa"}>Intolerância Religiosa</MenuItem>
-                <MenuItem value={"machismo"}>Machismo</MenuItem>
-                <MenuItem value={"raca"}>Raça</MenuItem>
+                <MenuItem value={"doenca_grave_deficiencia"}>
+                  Doença grave/deficiência
+                </MenuItem>
                 <MenuItem value={"etnia"}>Etnia</MenuItem>
+
+                <MenuItem value={"orientacao_sexual"}>
+                  Orientação Sexual
+                </MenuItem>
                 <MenuItem value={"nacionalidade"}>Nacionalidade</MenuItem>
-                <MenuItem value={"doenca_grave_deficiencia"}>Doença grave/deficiência</MenuItem>
-                <MenuItem value={"sexo"}>Sexo</MenuItem>
-                <MenuItem value={"genero"}>Gênero</MenuItem>
-                <MenuItem value={"posicionamento_politico"}>Posicionamento Político</MenuItem>
-                <MenuItem value={"posicionamento_esportivo"}>Posicionamento Esportivo</MenuItem>
+                <MenuItem value={"posicionamento_politico"}>
+                  Posicionamento Político
+                </MenuItem>
+                <MenuItem value={"posicionamento_esportivo"}>
+                  Posicionamento Esportivo
+                </MenuItem>
+                <MenuItem value={"raca"}>Raça</MenuItem>
+
+                <MenuItem value={"sexo_genero"}>Sexo/Gênero</MenuItem>
               </Select>
             </FormControl>
 
